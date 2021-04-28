@@ -85,7 +85,7 @@ Daemon.prototype.innerStart = function(cb) {
     fmt.sep();
   };
 
-  // Write Daemon PID into file
+  // 写入守护进程pid
   try {
     fs.writeFileSync(that.pid_path, process.pid.toString());
   } catch (e) {

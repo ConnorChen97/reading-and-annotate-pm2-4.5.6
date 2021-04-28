@@ -1,8 +1,4 @@
-/**
- * Copyright 2013-2021 the PM2 project authors. All rights reserved.
- * Use of this source code is governed by a license that
- * can be found in the LICENSE file.
- */
+
 'use strict';
 
 const commander   = require('commander');
@@ -132,6 +128,7 @@ class API {
     if (this.secret_key && process.env.NODE_ENV == 'local_test')
       that.gl_is_km_linked = true;
 
+    // 启动Daemon进程
     KMDaemon.ping(this._conf, function(err, result) {
       if (!err && result === true) {
         fs.readFile(conf.INTERACTION_CONF, (err, _conf) => {
@@ -321,6 +318,7 @@ class API {
     }
     if (!opts) opts = {};
 
+    // 判断node版本是否小于6.0.0，语义化版本
     if (semver.lt(process.version, '6.0.0')) {
       Common.printOut(conf.PREFIX_MSG_WARNING + 'Node 4 is deprecated, please upgrade to use pm2 to have all features');
     }
@@ -531,6 +529,7 @@ class API {
   delete (process_name, jsonVia, cb) {
     var that = this;
 
+    // 判断第二个参数是否是传了回调函数，回调函数赋值给cb，jsonVia置为null
     if (typeof(jsonVia) === "function") {
       cb = jsonVia;
       jsonVia = null;
@@ -544,11 +543,13 @@ class API {
       return that.actionFromJson('deleteProcessId', process_name, commander, 'pipe', (err, procs) => {
         return cb ? cb(err, procs) : this.speedList()
       });
+    // 判断参数类型是否是string和后缀是否包含.json等
     if (Common.isConfigFile(process_name))
       return that.actionFromJson('deleteProcessId', process_name, commander, 'file', (err, procs) => {
         return cb ? cb(err, procs) : this.speedList()
       });
     else {
+      // 具体的删除操作
       that._operate('deleteProcessId', process_name, (err, procs) => {
         return cb ? cb(err, procs) : this.speedList()
       });
@@ -1313,6 +1314,7 @@ class API {
     if (!envs)
       envs = {};
 
+    // 判断第三个参数是function则赋值给cb，envs置空
     if (typeof(envs) == 'function'){
       cb = envs;
       envs = {};
