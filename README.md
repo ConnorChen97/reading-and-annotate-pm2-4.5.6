@@ -21,3 +21,12 @@ pm2启动时，后台启动一个Daemon进程，监听客户端请求。客户�
 
 ./lib/Client.js
   - 发送rpc请求给Daemon进程
+
+#### pm2 start
+根据启动模式是fork还是cluster，分别调用child_process.fork或者cluster.fork。保存进程状态到clusters_db对象中。
+
+#### pm2 restart
+先kill掉process，再start一个
+
+#### pm2 list
+调用pidusage库来获取进程的信息

@@ -10,11 +10,19 @@ pm2.start('/Users/chenxiaokang/WorkSpace/project/GithubProject/reading-and-annot
     return pm2.disconnect();
   }
 
-  pm2.list(function (err, list) {
-    console.log(list)
-  });
+  pm2.restart('/Users/chenxiaokang/WorkSpace/project/GithubProject/reading-and-annotate-pm2-4.5.6/pm2/examples/api-pm2/http.js', function (err, app) {
 
-  console.log(23131231)
+    if (err) {
+      console.error(err);
+      return pm2.disconnect();
+    }
+    
+    pm2.list(function (err, list) {
+      console.log(list)
+    });
+  
+    console.log(23131231)
+  });
 });
 
 // pm2.delete('all', function (err) {

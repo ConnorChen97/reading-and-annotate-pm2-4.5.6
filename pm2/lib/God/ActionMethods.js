@@ -31,7 +31,7 @@ var Utility       = require('../Utility');
  */
 module.exports = function(God) {
   /**
-   * Description
+   * Description use pidusage get process info
    * @method getMonitorData
    * @param {} env
    * @param {} cb

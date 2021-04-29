@@ -602,6 +602,7 @@ class API {
       opts = null;
     }
 
+    // rpc通知Daemon 调用 God.js 路由到 lib/God/ActionMethods.js 的 getMonitorData函数，调用pidusage
     that.Client.executeRemote('getMonitorData', {}, function(err, list) {
       if (err) {
         Common.printError(err);
