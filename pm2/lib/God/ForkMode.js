@@ -32,6 +32,7 @@ module.exports = function ForkMode(God) {
    * @param {} cb
    * @return
    */
+  // fork模式
   God.forkMode = function forkMode(pm2_env, cb) {
     var command = '';
     var args    = [];
@@ -42,7 +43,7 @@ module.exports = function ForkMode(God) {
     var interpreter = pm2_env.exec_interpreter || 'node';
     var pidFile     = pm2_env.pm_pid_path;
 
-    if (interpreter !== 'none') {
+    if (interpreter !== 'none') { // 使用node
       command = interpreter;
 
       if (pm2_env.node_args && Array.isArray(pm2_env.node_args)) {
@@ -86,8 +87,9 @@ module.exports = function ForkMode(God) {
     }
 
     log("stds: %j", stds);
-
-    Utility.startLogging(stds, function(err, result) {
+    
+    // 启动日志
+    Utility.startLogging(stds, function(err, result) { 
       if (err) {
         God.logAndGenerateError(err);
         return cb(err);
@@ -115,7 +117,8 @@ module.exports = function ForkMode(God) {
           options.gid = pm2_env.gid
         }
 
-        var cspr = spawn(command, args, options);
+        // 启动子进程
+        var cspr = spawn(command, args, options); 
       } catch(e) {
         God.logAndGenerateError(e);
         return cb(e);

@@ -107,11 +107,9 @@ God.writeExitSeparator = function(pm2_env, code, signal) {
   }
 }
 
-/**
- * Init new process
- */
+// 初始化新进程
 God.prepare = function prepare (env, cb) {
-  // generate a new unique id for each processes
+  // 新进程生成唯一id
   env.env.unique_id = Utility.generateUUID()
 
   // if the app is standalone, no multiple instance
@@ -137,7 +135,7 @@ God.prepare = function prepare (env, cb) {
     });
   }
 
-  // find how many replicate the user want
+  // 判断用户需要多少复制集
   env.instances = parseInt(env.instances);
   if (env.instances === 0) {
     env.instances = numCPUs;
@@ -175,6 +173,7 @@ God.prepare = function prepare (env, cb) {
  * @param {Function} cb
  * @return Literal
  */
+// 启动脚本
 God.executeApp = function executeApp(env, cb) {
   var env_copy = Utility.clone(env);
 
@@ -200,7 +199,7 @@ God.executeApp = function executeApp(env, cb) {
    * 4 - If watch option is set, look for changes
    */
   if (env_copy['pm_id'] === undefined) {
-    env_copy['pm_id']             = God.getNewId();
+    env_copy['pm_id']             = God.getNewId(); // pm2的递增id
     env_copy['restart_time']      = 0;
     env_copy['unstable_restarts'] = 0;
 
@@ -221,6 +220,7 @@ God.executeApp = function executeApp(env, cb) {
     }
   }
 
+  // pm2_env.cron_restart 定时启动
   God.registerCron(env_copy)
 
   /** Callback when application is launched */
@@ -238,6 +238,7 @@ God.executeApp = function executeApp(env, cb) {
     if (cb) cb(null, proc);
   }
 
+  // 集群模式
   if (env_copy.exec_mode === 'cluster_mode') {
     /**
      * Cluster mode logic (for NodeJS apps)
@@ -302,12 +303,13 @@ God.executeApp = function executeApp(env, cb) {
   }
   else {
     /**
-     * Fork mode logic
+     * fork模式，forkMode函数启动子进程，返回clu
      */
     God.forkMode(env_copy, function forkMode(err, clu) {
       if (cb && err) return cb(err);
       if (err) return false;
 
+      // 一个大对象，存储pid对应的子进程的信息
       var old_env = God.clusters_db[clu.pm2_env.pm_id];
       if (old_env) old_env = null;
 

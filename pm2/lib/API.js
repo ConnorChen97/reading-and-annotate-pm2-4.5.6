@@ -327,13 +327,14 @@ class API {
     if (util.isArray(opts.watch) && opts.watch.length === 0)
       opts.watch = (opts.rawArgs ? !!~opts.rawArgs.indexOf('--watch') : !!~process.argv.indexOf('--watch')) || false;
 
+    // cmd是配置文件或者cmd类型是object
     if (Common.isConfigFile(cmd) || (typeof(cmd) === 'object')) {
       that._startJson(cmd, opts, 'restartProcessId', (err, procs) => {
         return cb ? cb(err, procs) : this.speedList()
       })
     }
     else {
-      that._startScript(cmd, opts, (err, procs) => {
+      that._startScript(cmd, opts, (err, procs) => { // 调用启动函数
         return cb ? cb(err, procs) : this.speedList(0)
       })
     }
@@ -736,11 +737,12 @@ class API {
       }
     }
 
+    // 启动函数
     series([
-      restartExistingProcessName,
-      restartExistingNameSpace,
-      restartExistingProcessId,
-      restartExistingProcessPathOrStartNew
+      restartExistingProcessName, // 通过进程名启动
+      restartExistingNameSpace, // 通过nameSpace启动, pm2_env.namespace
+      restartExistingProcessId, // 通过pid启动
+      restartExistingProcessPathOrStartNew // 通过脚本路径启动
     ], function(err, data) {
       if (err instanceof Error)
         return cb ? cb(err) : that.exitCli(conf.ERROR_EXIT);
@@ -880,6 +882,7 @@ class API {
         // Is KM linked?
         resolved_paths.km_link = that.gl_is_km_linked;
 
+        // 初始化新进程 God.prepare 调用 God.executeApp 根据是集群模式还是fork模式来spawn新进程
         that.Client.executeRemote('prepare', resolved_paths, function(err, data) {
           if (err) {
             Common.printError(conf.PREFIX_MSG_ERR + 'Error while launching application', err.stack || err);

@@ -706,6 +706,7 @@ Client.prototype.getProcessIdByName = function(name, force_all, cb) {
   });
 };
 
+// 通过nameSpace获取pid
 Client.prototype.getProcessIdsByNamespace = function(namespace, force_all, cb) {
   var found_proc   = [];
   var full_details = {};

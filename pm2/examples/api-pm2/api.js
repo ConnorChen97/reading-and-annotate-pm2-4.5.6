@@ -4,8 +4,7 @@ var pm2 = require('../..');
 //   console.log(list)
 // });
 
-pm2.start('/Users/chenxiaokang/WorkSpace/project/GithubProject/pm2/examples/api-pm2/http.js', function (err, app) {
-  console.log(123123)
+pm2.start('/Users/chenxiaokang/WorkSpace/project/GithubProject/reading-and-annotate-pm2-4.5.6/pm2/examples/api-pm2/http.js', function (err, app) {
   if (err) {
     console.error(err);
     return pm2.disconnect();

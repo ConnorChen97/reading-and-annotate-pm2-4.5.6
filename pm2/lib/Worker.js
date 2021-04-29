@@ -23,6 +23,7 @@ module.exports = function(God) {
     return `cron-${pm_id}`
   }
 
+  // 定时启动
   God.registerCron = function(pm2_env) {
     if (!pm2_env ||
         pm2_env.pm_id === undefined ||
