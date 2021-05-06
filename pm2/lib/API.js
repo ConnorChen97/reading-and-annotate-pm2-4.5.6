@@ -312,6 +312,7 @@ class API {
    * @param {Function} cb called when application has been started
    */
   start (cmd, opts, cb) {
+    // 交换参数
     if (typeof(opts) == "function") {
       cb = opts;
       opts = {};
